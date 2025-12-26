@@ -8,15 +8,27 @@ use App\Http\Controllers\Admin\QuranLogController;
 
 /*
 |--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
+// Landing page
+Route::view('/', 'welcome')->name('home');
+
+/*
+|--------------------------------------------------------------------------
 | Admin Auth (WEB)
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::view('/', 'welcome');
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
 
+// 🔐 Rate limit login (ANTI BRUTE FORCE)
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +40,7 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
+        // DASHBOARD
         Route::get('/', [DashboardController::class, 'index'])
             ->name('dashboard');
 
